@@ -51,6 +51,7 @@ struct ContentView: View {
             Text("Score: \(playerScore)")
                 .font(.title2)
                 .bold()
+                .italic()
         }
     }
     
