@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var playerScore = 0
     
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -41,6 +42,15 @@ struct ContentView: View {
             } message: {
                 Text(errorMessage)
             }
+            .toolbar {
+                Button("New word") {
+                    startGame()
+                }
+            }
+            
+            Text("Score: \(playerScore)")
+                .font(.title2)
+                .bold()
         }
     }
     
@@ -64,8 +74,19 @@ struct ContentView: View {
             return
         }
         
+        guard isGreaterThan3(word: answer) else {
+            wordError(title: "Word is very short", message: "It must be at least a 3 letter word!")
+            return
+        }
+        
+        guard isInitialWord(word: answer) else {
+            wordError(title: "Word = Initial Word", message: "It can't be the same word!")
+            return
+        }
+        
         withAnimation {
             usedWords.insert(answer, at: 0)
+            playerScore += (answer.count)
         }
         newWord = ""
     }
@@ -76,6 +97,10 @@ struct ContentView: View {
                 let allWords = startWords.components(separatedBy: "\n")
                 
                 rootWord = allWords.randomElement() ?? "silkworm"
+                
+                withAnimation {
+                    playerScore = 0
+                }
                 
                 return
             }
@@ -100,6 +125,20 @@ struct ContentView: View {
         }
         
         return true
+    }
+    
+    func isGreaterThan3(word: String) -> Bool {
+        if word.count >= 3 {
+            return true
+        }else {
+            return false
+        }
+    }
+    
+    func isInitialWord(word: String) -> Bool {
+        let result = rootWord != word ? true : false
+        
+        return result
     }
     
     func isReal(word: String) -> Bool {
