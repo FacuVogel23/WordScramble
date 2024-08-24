@@ -101,7 +101,10 @@ struct ContentView: View {
                 
                 withAnimation {
                     playerScore = 0
+                    usedWords.removeAll()
                 }
+                
+                //usedWords.removeAll()
                 
                 return
             }
