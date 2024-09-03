@@ -19,39 +19,43 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                Section {
-                    TextField("Enter your word", text: $newWord)
-                        .textInputAutocapitalization(.never)
-                }
-                
-                Section {
-                    ForEach(usedWords, id: \.self) { word in
-                        HStack {
-                            Image(systemName: "\(word.count).circle")
-                            Text(word)
+            VStack {
+                List {
+                    Section {
+                        TextField("Enter your word", text: $newWord)
+                            .textInputAutocapitalization(.never)
+                    }
+                    
+                    Section {
+                        ForEach(usedWords, id: \.self) { word in
+                            HStack {
+                                Image(systemName: "\(word.count).circle")
+                                Text(word)
+                            }
                         }
                     }
                 }
-            }
-            .navigationTitle(rootWord)
-            .onSubmit(addNewWord)
-            .onAppear(perform: startGame)
-            .alert(errorTitle, isPresented: $showingError) {
-                Button("OK") { }
-            } message: {
-                Text(errorMessage)
-            }
-            .toolbar {
-                Button("New word") {
-                    startGame()
+                .navigationTitle(rootWord)
+                .onSubmit(addNewWord)
+                .onAppear(perform: startGame)
+                .alert(errorTitle, isPresented: $showingError) {
+                    Button("OK") { }
+                } message: {
+                    Text(errorMessage)
                 }
+                .toolbar {
+                    Button("New word") {
+                        startGame()
+                    }
             }
-            
             Text("Score: \(playerScore)")
                 .font(.title2)
                 .bold()
                 .italic()
+                .foregroundStyle(.primary)
+                .frame(minHeight: 50)
+            }
+            .background(LinearGradient(colors: [.cyan, .indigo, .cyan], startPoint: .leading, endPoint: .trailing))
         }
     }
     
